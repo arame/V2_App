@@ -8,12 +8,13 @@ from sentiment import Sentiment
 from helper import Helper
 
 class HydratedTweets:
-    def __init__(self, hydrated_tweets):
+    def __init__(self, db_twitter, hydrated_tweets):
         self.hydrated_tweets = hydrated_tweets
         self.no_language_cnt = 0
         self.tweet_saved_cnt = 0
         self.sent = Sentiment()
         self.first_tweet = True
+        self.db_twitter = db_twitter
 
     def output_to_database(self):
         directory_path = os.getcwd()
@@ -33,12 +34,10 @@ class HydratedTweets:
             self.user_location = self.get_user_location(tweet)
             if len(self.country_code) > 0:
                 self.output_to_db(tweet)
-                self.tweet_saved_cnt += 1
                 continue
 
             if len(self.user_location) > 0:
                 self.output_to_db(tweet)
-                self.tweet_saved_cnt += 1
                 continue
             
         # Return to root directory
@@ -98,17 +97,21 @@ class HydratedTweets:
         full_text = self.get_string_json_data(tweet, "full_text")
         clean_text = DataCleaner.lowercase_text(full_text)         
         clean_text = DataCleaner.remove_noise(clean_text)
+        
+        if len(clean_text) == 0:
+            return      # Do not output an empty tweet
+        
         self.sent.calc(clean_text)
+        if self.sent._sentiment == self.sent.NEUTRAL:
+            return      # Do not output a tweet with neutral sentiment
+        
         is_facemask = self.facemask_in_text(clean_text)
         is_lockdown = self.lockdown_in_text(clean_text)
         is_vaccine = self.is_vaccine_in_text(clean_text)
-        if len(clean_text) == 0:
-            return      # Do not output an empty tweet
-
         retweet_count = tweet["retweet_count"]
-        favorite_count = tweet["favorite_count"]
+        favourite_cnt = tweet["favorite_count"]
         row = {'tweet_id':tweet_id, 
-               'language': language, 
+               'lang': language, 
                'created_at': created_at, 
                'place_country_code': self.country_code, 
                'user_location': self.user_location, 
@@ -117,15 +120,17 @@ class HydratedTweets:
                'clean_text': clean_text, 
                'sentiment': self.sent._sentiment, 
                'retweet_cnt': retweet_count, 
-               'favorite_cnt': favorite_count, 
+               'favourite_cnt': favourite_cnt, 
                'is_facemask': is_facemask, 
                "is_lockdown": is_lockdown, 
                "is_vaccine": is_vaccine}
-        d = Data()
-        d.save_tweet(row)
+
+        self.db_twitter.save_tweet(row)
+        self.tweet_saved_cnt += 1
         if self.first_tweet:
             self.first_tweet = False
-            d.display_table(d.display_tweet_table, "tweets")
+            sql_script = Data.display_tweet_table
+            self.db_twitter.display_table(sql_script, "tweets")
         
     def facemask_in_text(self, text):
         if "facemask" in text or "face-mask" in text or "mask" in text:

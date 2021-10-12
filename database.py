@@ -8,6 +8,7 @@ class Data:
     TABLE_PARAMETER = "{TABLE_PARAMETER}"
     DROP_TABLE_SQL = f"DROP TABLE {TABLE_PARAMETER};"
     GET_TABLES_SQL = "SELECT name FROM sqlite_master WHERE type='table';"
+    display_tweet_table = "select * from tweets;"
         
     def __init__(self) -> None:
         self.country_file = Hyper.countries_file
@@ -81,9 +82,8 @@ class Data:
         
     def create_tweet_table_on_database(self):
         self.sql_create_tweet_table = """ CREATE TABLE IF NOT EXISTS tweets (
-                                id integer PRIMARY KEY,
-                                tweet_id integer  NOT NULL,
-                                [language] text NOT NULL,
+                                tweet_id integer  PRIMARY KEY,
+                                lang text NOT NULL,
                                 created_at timestamp NOT NULL,
                                 place_country_code text NULL,
                                 user_location text NULL,
@@ -97,8 +97,7 @@ class Data:
                                 is_lockdown boolean NOT NULL, 
                                 is_vaccine boolean NOT NULL
                             ); """
-        self.create_table(self.sql_create_tweet_table)
-        self.display_tweet_table = "select * from tweets;" 
+        self.create_table(self.sql_create_tweet_table) 
         Helper.printline("Tweets table successfully created")
       
     def create_connection(self):
@@ -156,32 +155,8 @@ class Data:
     def save_tweet(self, row):
         df_tweet = pd.DataFrame([row])
         try:
-            df_tweet.to_sql("tweets", self.con, if_exists='append', index=True, index_label="id")
+            df_tweet.to_sql("tweets", self.con, if_exists='append', index=False)
+            self.con.commit()
         except Exception as e:
             sys.exit(f"Error inserting into tweets the row - '{row}': {e}")
-        '''
-            id integer PRIMARY KEY,
-            tweet_id integer NOT NULL
-            [language] text NOT NULL,
-            create_date datetime NOT NULL,
-            place text NULL,
-            user_location text NULL,
-            country_code text NULL,
-            full_text text NOT NULL,
-            clean_text text NOT NULL,
-            sentiment float NULL,
-            retweet_cnt integer NOT NULL,
-            favourite_cnt integer NOT NULL,
-            is_facemask boolean NOT NULL,
-            is_lockdown boolean NOT NULL,
-            is_vaccine boolean NOT NULL
-
-            sql_script = 'INSERT INTO tweets
-                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-            try:
-                c = self.con.cursor()
-                c.execute(sql_script, tweet)
-                c.close()
-            except Exception as e:
-                sys.exit(f"Error with inserting the tweet: {tweet}: {e}")
-        '''   
+       

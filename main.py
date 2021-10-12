@@ -19,8 +19,8 @@ from database import Data
 
 def main():
     hyper = Hyper()
+    d = Data()
     if Hyper.create_schema:
-        d = Data()
         d.create_schema()
     consumer_key = Hyper.consumer_key
     consumer_secret = Hyper.consumer_secret
@@ -79,7 +79,7 @@ def main():
         count += 1
         # If num_save iterations have passed,
         if (count % num_save) == 0:
-            tweets = HydratedTweets(hydrated_tweets[start_index:])
+            tweets = HydratedTweets(d, hydrated_tweets[start_index:])
             tweets.output_to_database()
             Helper.printline(f"   Processed {count} hydrated tweets.")
             Helper.printline(f"   Saved     {Hyper.tweet_saved_cnt} hydrated tweets.")
