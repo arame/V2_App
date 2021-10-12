@@ -29,13 +29,13 @@ class Data:
         if Hyper.IsLoadCountries:
             table_name = "countries"
             self.load_table(self.df_countries, table_name)
-            self.display_table(self.display_country_table, table_name)
+            #self.display_table(self.display_country_table, table_name)
         if Hyper.IsLoadUserLocations:
             table_name = "user_locations"
             self.df_user_locations = self.df_countries.copy(deep=True)
             self.df_user_locations = self.df_user_locations.rename(columns = {"country": "user_location"})
             self.load_table(self.df_user_locations, table_name)
-            self.display_table(self.display_user_locations_table, table_name)
+            #self.display_table(self.display_user_locations_table, table_name)
     
     def reset_tweets(self):
         c = self.con.cursor()

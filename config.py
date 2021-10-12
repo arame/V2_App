@@ -3,7 +3,8 @@ import os, re
 class Hyper:
     no_language_cnt = 0
     tweet_saved_cnt = 0
-    db = "../sql/twitter.db"
+    _date = "_2021_apr_04_08"
+    db = f"../sql/twitter.db{_date}"
     countries_file = "countries.csv"
     language = "en"
     create_schema = True
