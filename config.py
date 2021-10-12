@@ -6,10 +6,10 @@ class Hyper:
     db = "../sql/twitter.db"
     countries_file = "countries.csv"
     language = "en"
-    create_schema = False
-    IsStartAgain = False
-    IsLoadCountries = False
-    IsLoadUserLocations = False
+    create_schema = True
+    IsStartAgain = True
+    IsLoadCountries = True
+    IsLoadUserLocations = True
     # Keys, access tokens and secrets taken from Twitter are stored as environment variables
     consumer_key = os.environ['CONSUMER_KEY']
     consumer_secret = os.environ['CONSUMER_SECRET'] 

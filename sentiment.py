@@ -37,11 +37,7 @@ class Sentiment:
         except:
             _t = str(text).encode('utf8')
             print(f"!! Data Error - row: {self.count}, text: {self.text}, previous text: {self.prev_text}")
-            self.positive = 9
-            self.negative = 9
-            self.neutral = 9
-            self.compound = 9
-            self._sentiment = 9
+            self._sentiment = self.NEUTRAL
 
     def get_sentiment(self):
         # The compound value is set between -1 and 1
