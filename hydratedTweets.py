@@ -129,12 +129,7 @@ class HydratedTweets:
         self.tweet_saved_cnt += 1
         if self.tweet_saved_cnt % 10000 == 0:
             Helper.printline(f"{self.tweet_saved_cnt} tweets saved")
-            
-        if self.first_tweet:
-            self.first_tweet = False
-            sql_script = Data.display_tweet_table
-            self.db_twitter.display_table(sql_script, "tweets")
-        
+
     def facemask_in_text(self, text):
         if "facemask" in text or "face-mask" in text or "mask" in text:
             return True

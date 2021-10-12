@@ -69,9 +69,8 @@ class Data:
     
     def create_user_locations_table_on_database(self):
         self.sql_create_user_locations_table = """ CREATE TABLE IF NOT EXISTS user_locations (
-                                id integer PRIMARY KEY,
                                 code text NOT NULL,
-                                user_location text NOT NULL
+                                user_location text PRIMARY KEY
                             ); """
         self.create_table(self.sql_create_user_locations_table)
         Helper.printline("User Locations table successfully created")
@@ -79,8 +78,7 @@ class Data:
 
     def create_countries_table_on_database(self):
         self.sql_create_country_table = """ CREATE TABLE IF NOT EXISTS countries (
-                                id integer PRIMARY KEY,
-                                code text NOT NULL,
+                                code text PRIMARY KEY,
                                 country text NOT NULL
                             ); """
         self.create_table(self.sql_create_country_table)
@@ -136,7 +134,7 @@ class Data:
         :return:
         """
         try:
-            df.to_sql(table_name, self.con, if_exists="replace", index=True)
+            df.to_sql(table_name, self.con, if_exists="replace", index=False)
             self.con.commit()
         except Exception as e:
             sys.exit(f"Error with inserting {table_name}: {e}")
