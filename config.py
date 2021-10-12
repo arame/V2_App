@@ -4,7 +4,7 @@ class Hyper:
     no_language_cnt = 0
     tweet_saved_cnt = 0
     _date = "_2021_apr_04_08"
-    db = f"../sql/twitter.db{_date}"
+    db = f"../sql/twitter{_date}.db"
     countries_file = "countries.csv"
     language = "en"
     create_schema = True
