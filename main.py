@@ -22,6 +22,8 @@ def main():
     d = Data()
     if Hyper.create_schema:
         d.create_schema()
+    elif Hyper.IsResetTweets:
+        d.reset_tweets()    
     consumer_key = Hyper.consumer_key
     consumer_secret = Hyper.consumer_secret
     access_token = Hyper.access_token

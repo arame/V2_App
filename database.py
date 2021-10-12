@@ -36,7 +36,14 @@ class Data:
             self.df_user_locations = self.df_user_locations.rename(columns = {"country": "user_location"})
             self.load_table(self.df_user_locations, table_name)
             self.display_table(self.display_user_locations_table, table_name)
-            
+    
+    def reset_tweets(self):
+        c = self.con.cursor()
+        sql = Data.DROP_TABLE_SQL.replace(Data.TABLE_PARAMETER, "tweets")
+        c.execute(sql)
+        c.close() 
+        self.create_tweet_table_on_database()
+              
     def create_all_tables(self):
         self.create_countries_table_on_database()
         self.create_user_locations_table_on_database()
