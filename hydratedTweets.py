@@ -127,6 +127,9 @@ class HydratedTweets:
 
         self.db_twitter.save_tweet(row)
         self.tweet_saved_cnt += 1
+        if self.tweet_saved_cnt % 10000 == 0:
+            Helper.printline(f"{self.tweet_saved_cnt} tweets saved")
+            
         if self.first_tweet:
             self.first_tweet = False
             sql_script = Data.display_tweet_table
