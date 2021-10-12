@@ -29,6 +29,7 @@ class Data:
         if Hyper.IsLoadCountries:
             table_name = "countries"
             self.load_table(self.df_countries, table_name)
+            Helper.printline("Countries table loaded")
             #self.display_table(self.display_country_table, table_name)
         if Hyper.IsLoadUserLocations:
             table_name = "user_locations"
@@ -136,6 +137,7 @@ class Data:
         try:
             df.to_sql(table_name, self.con, if_exists="replace", index=False)
             self.con.commit()
+            Helper.printline(f"{table_name} table loaded")
         except Exception as e:
             sys.exit(f"Error with inserting {table_name}: {e}")
             
