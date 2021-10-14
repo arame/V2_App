@@ -92,14 +92,12 @@ def main():
     # In that case, just write out the remainder of tweets.
     if count != start_index:
         print("Here with start_index", start_index)
-        tweets = HydratedTweets(hydrated_tweets[start_index:])
+        tweets = HydratedTweets(d, hydrated_tweets[start_index:])
         tweets.output_to_database()
         Helper.printline(f"   Processed {count} hydrated tweets.")
         Helper.printline(f"   Saved     {Hyper.tweet_saved_cnt} hydrated tweets.")
 
     Helper.printline(f"   ** Completed output **")
-
-
 
 def get_2020_tweet_ids(hyper):
     files = []

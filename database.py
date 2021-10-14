@@ -71,7 +71,7 @@ class Data:
     def create_user_locations_table_on_database(self):
         self.sql_create_user_locations_table = """ CREATE TABLE IF NOT EXISTS user_locations (
                                 code text NOT NULL,
-                                user_location text PRIMARY KEY
+                                user_location text NOT NULL PRIMARY KEY
                             ); """
         self.create_table(self.sql_create_user_locations_table)
         Helper.printline("User Locations table successfully created")
@@ -79,7 +79,7 @@ class Data:
 
     def create_countries_table_on_database(self):
         self.sql_create_country_table = """ CREATE TABLE IF NOT EXISTS countries (
-                                code text PRIMARY KEY,
+                                code text NOT NULL PRIMARY KEY,
                                 country text NOT NULL
                             ); """
         self.create_table(self.sql_create_country_table)
@@ -88,7 +88,7 @@ class Data:
         
     def create_tweet_table_on_database(self):
         self.sql_create_tweet_table = """ CREATE TABLE IF NOT EXISTS tweets (
-                                tweet_id integer  PRIMARY KEY,
+                                tweet_id integer NOT NULL PRIMARY KEY,
                                 lang text NOT NULL,
                                 created_at timestamp NOT NULL,
                                 place_country_code text NULL,
